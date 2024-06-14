@@ -25,6 +25,8 @@ jobs:
 
     - name: Run CASR on the .java file(s)
       run: |
+        echo "::add-path::$HOME/.local/bin"
+        
         #!/bin/bash
 
         directory=$(pwd)
