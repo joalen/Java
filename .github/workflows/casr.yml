@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-jpf:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
     - name: Checkout repository
@@ -19,14 +19,15 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Install CASR
+    - name: Setup CASR
       run: |
-        curl -sSL https://get.casr.dev/install.sh | sh
+        curl -L -o casr-x86_64-unknown-linux-gnu.tar.xz https://github.com/ispras/casr/releases/latest/download/casr-x86_64-unknown-linux-gnu.tar.xz
+        tar -xvf casr-x86_64-unknown-linux-gnu.tar.xz
+        mv casr-x86_64-unknown-linux-gnu /tmp/casr
+        echo "/tmp/casr" >> $GITHUB_PATH
 
     - name: Run CASR on the .java file(s)
-      run: |
-        echo "::add-path::$HOME/.local/bin"
-        
+      run: |        
         #!/bin/bash
 
         directory=$(pwd)
