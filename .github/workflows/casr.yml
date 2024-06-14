@@ -1,0 +1,40 @@
+name: CASR Runner
+
+on:
+  push:
+
+jobs:
+  run-jpf:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        ref: b075c19a548e7e1645f5024957cdec58e3dd577b
+
+    - name: Install JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Install CASR
+      run: |
+        curl -sSL https://get.casr.dev/install.sh | sh
+
+    - name: Run CASR on the .java file(s)
+      run: |
+        #!/bin/bash
+
+        directory=$(pwd)
+        
+        java_files=$(find "$directory" -type f -name "*.java")
+        
+        # Loop through each .java file found
+        for java_file in $java_files;
+        do
+            # Construct the command
+            command="casr-java --stdout -- java $java_file"
+            $command
+        done
