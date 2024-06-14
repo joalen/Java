@@ -28,8 +28,8 @@ jobs:
         echo "/tmp/casr" >> $GITHUB_PATH
 
     - name: Run CASR on the .java file(s)
-      continue-on-error: true
-      run: |        
+      run: |      
+        set +e
         #!/bin/bash
 
         directory=$(pwd)
