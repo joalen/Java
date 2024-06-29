@@ -31,13 +31,11 @@ jobs:
         chmod +x /tmp/casr/casr-java
         echo "/tmp/casr" >> $GITHUB_PATH
 
-    - name: Run CASR on the .java file(s) (macOS)
-      if: runner.os == 'macOS'
+    - name: Run CASR on the .java file(s)
       continue-on-error: true
       run: |      
         set +e
         #!/bin/bash
-
         directory=$(pwd)
         
         java_files=$(find "$directory" -type f -name "*.java")
@@ -46,25 +44,6 @@ jobs:
         for java_file in $java_files;
         do
             # Construct the command
-            command="casr-java --stdout -- java $java_file 2>&1 >/dev/null"
-            $command
-        done
-
-    - name: Run CASR on the .java file(s) (Linux)
-      if: runner.os == 'Linux'
-      continue-on-error: true
-      run: |      
-        set +e
-        #!/bin/bash
-
-        directory=$(pwd)
-        
-        java_files=$(find "$directory" -type f -name "*.java")
-        
-        # Loop through each .java file found
-        for java_file in $java_files;
-        do
-            # Construct the command
-            command="casr-java --stdout -- java $java_file 2>/dev/null"
+            command="casr-java --stdout -- java $java_file"
             $command
         done
